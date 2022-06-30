@@ -1,0 +1,7 @@
+name: ToolReplace
+version: '${project.version}'
+main: com.github.h5law.toolreplace.ToolReplace
+api-version: 1.19
+authors: [ h5law ]
+description: Replace tools that break with the same item from player inventory
+website: https://github.com/h5law
