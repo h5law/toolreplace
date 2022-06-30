@@ -45,7 +45,16 @@ public final class ToolReplace extends JavaPlugin {
 
         // remove the broken tool from list
         matches.entrySet()
-               .removeIf(e -> (e.getValue().equals(broken) || e.getValue().getDurability() >= 100));
+               .removeIf(e -> {
+                   // check if broken
+                   if (e.getValue().getDurability() >= 100) {
+                       return true;
+                   // clause to catch items spawned damage
+                   } else if (e.getValue().equals(broken)) {
+                       return true;
+                   }
+                   return false;
+               });
 
         // sort based on damage
         Comparator<Map.Entry<Integer, ? extends ItemStack>> durabilityComparator =
@@ -73,7 +82,7 @@ public final class ToolReplace extends JavaPlugin {
         ItemStack item = matches.get(slot);
 
         PlayerInventory inv = player.getInventory();
-        debug(player, "Replacing  %s with item from slot %s", item.getType(), slot);
+        debug(player, "Replacing %s with item from slot %s", item.getType(), slot);
         // move match to slot
         inv.setItem(inv.getHeldItemSlot(), item);
         // remove match from original slot
