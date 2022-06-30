@@ -1,6 +1,6 @@
 package com.github.h5law.toolreplace;
 
-import org.bukkit.Material;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -20,9 +20,18 @@ import java.util.stream.Collectors;
 
 public final class ToolReplace extends JavaPlugin {
 
-    private void debug(Player player, String text, @Nullable Object ...vars) {
+    private void debug(Player player, Boolean critical, String text, @Nullable Object... vars) {
         if (text != null) {
-            player.sendMessage(String.format("[DEBUG] " + text, vars));
+            if (vars.length > 0) {
+                for (int i = 0; i < vars.length; i++) {
+                    text = text.replace("{" + i + "}", vars[i].toString());
+                }
+            }
+            getLogger().log(Level.INFO, "(" + player.getName() + ") " + text);
+            player.sendMessage(
+                    (critical ? ChatColor.RED : ChatColor.GREEN)
+                    + "[ToolReplace] " + text
+                    + ChatColor.RESET);
         }
     }
 
@@ -73,7 +82,7 @@ public final class ToolReplace extends JavaPlugin {
 
         LinkedHashMap<Integer, ? extends ItemStack> matches = searchInventory(player, broken);
         if (matches.size() == 0) {
-            debug(player, "No replacement found");
+            debug(player, false,"No replacement found");
             return;
         };
 
@@ -82,7 +91,7 @@ public final class ToolReplace extends JavaPlugin {
         ItemStack item = matches.get(slot);
 
         PlayerInventory inv = player.getInventory();
-        debug(player, "Replacing %s with item from slot %s", item.getType(), slot);
+        debug(player, false, "Replacing {0} with item from slot {1}", item.getItemMeta().getDisplayName(), slot);
         // move match to slot
         inv.setItem(inv.getHeldItemSlot(), item);
         // remove match from original slot
