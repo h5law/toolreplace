@@ -33,15 +33,22 @@ public class ToolReplaceCommand implements CommandExecutor {
                             switch (args[1]) {
                                 case "true":
                                     plugin.toggle(player, plugin.PlayerDebug, true);
+                                    player.sendMessage("[ToolReplace] Debug enabled");
                                     return true;
                                 case "false":
                                     plugin.toggle(player, plugin.PlayerDebug ,false);
+                                    player.sendMessage("[ToolReplace] Debug disabled");
                                     return true;
                                 default:
                                     player.sendMessage("[ToolReplace] Usage: /tr debug <true/false>");
                             }
                         } else {
                             plugin.toggle(player, plugin.PlayerDebug);
+                            if (plugin.PlayerDebug.contains(player.getUniqueId())) {
+                                player.sendMessage("[ToolReplace] Debug enabled");
+                            } else {
+                                player.sendMessage("[ToolReplace] Debug disabled");
+                            }
                             return true;
                         }
                     case "replace":
@@ -50,16 +57,24 @@ public class ToolReplaceCommand implements CommandExecutor {
                                 case "true":
                                     // remove from disable set
                                     plugin.toggle(player, plugin.DisableToolReplace, false);
+                                    player.sendMessage("[ToolReplace] Tool replacement enabled");
                                     return true;
                                 case "false":
                                     // add to disable set
                                     plugin.toggle(player, plugin.DisableToolReplace, true);
+                                    player.sendMessage("[ToolReplace] Tool replacement disabled");
                                     return true;
                                 default:
                                     player.sendMessage("[ToolReplace] Usage: /tr replace <true/false>");
                             }
                         } else {
                             plugin.toggle(player, plugin.DisableToolReplace);
+                            if (plugin.DisableToolReplace.contains(player.getUniqueId())) {
+                                player.sendMessage("[ToolReplace] Tool replacement disabled");
+                            } else {
+                                player.sendMessage("[ToolReplace] Tool replacement enabled");
+                            }
+                            return true;
                         }
                     default:
                         player.sendMessage("[ToolReplace] Unknown option");
