@@ -49,8 +49,7 @@ public final class ToolReplace extends JavaPlugin {
             }
             player.sendMessage(
                     (critical ? ChatColor.RED : ChatColor.GREEN)
-                    + "[ToolReplace] " + text
-                    + ChatColor.RESET);
+                    + "[ToolReplace] " + text);
         }
     }
 
