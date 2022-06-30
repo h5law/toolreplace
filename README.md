@@ -5,10 +5,29 @@ automatically replace a tool when it breaks with one found in the players
 inventory. It will use the most damaged tool first in the case there are
 multiple replacements available.
 
+Commands can be used to toggle debug messages and the auto replacement feature
+itself:
+
+```
+/togglereplace <OPTION> <ARGUMENT>
+/tr <OPTION> <ARGUMENT>
+```
+
+Options:
+ - help (Shows usage)
+ - debug 
+   - true
+   - false (Default) 
+   - NO ARG will toggle
+ - replace 
+   - true (Default)
+   - false 
+   - NO ARG will toggle
+
 ## TODO
 
- - Add commands to opt-in/opt-out of replacement feature
- - Add commands to enable/disable debug messages
+ - ~~Add commands to opt-in/opt-out of replacement feature~~
+ - ~~Add commands to enable/disable debug messages~~
  - Add support to replace with same tool of different tiers
 
 ## Dependencies
