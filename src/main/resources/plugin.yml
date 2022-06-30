@@ -5,3 +5,9 @@ api-version: 1.19
 authors: [ h5law ]
 description: Replace tools that break with the same item from player inventory
 website: https://github.com/h5law
+commands:
+  toolreplace:
+    description: Interact with the ToolReplace player settings
+    usage: /<command>
+    aliases:
+      - tr
