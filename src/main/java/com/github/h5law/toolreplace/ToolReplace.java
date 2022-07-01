@@ -110,7 +110,14 @@ public final class ToolReplace extends JavaPlugin {
         ItemStack item = matches.get(slot);
 
         PlayerInventory inv = player.getInventory();
-        debug(player, false, "Replacing {0} with item from slot {1}", item.getItemMeta().getDisplayName(), slot);
+        debug(
+                player,
+                false,
+                "Replacing {0} with item from slot {1} with damage {2}",
+                item.getType(),
+                slot,
+                item.getDurability()
+        );
         // move match to slot
         inv.setItem(inv.getHeldItemSlot(), item);
         // remove match from original slot

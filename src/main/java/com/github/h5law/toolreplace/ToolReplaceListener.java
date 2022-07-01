@@ -3,7 +3,6 @@ package com.github.h5law.toolreplace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemBreakEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 
 public class ToolReplaceListener implements Listener {
     private final ToolReplace plugin;
