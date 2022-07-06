@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -13,6 +14,8 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public final class ToolReplace extends JavaPlugin {
@@ -68,6 +71,17 @@ public final class ToolReplace extends JavaPlugin {
         getCommand("toolreplace").setExecutor(new ToolReplaceCommand(this));
     }
 
+    private Short getItemDurability(ItemStack item) {
+        ItemMeta meta = item.getItemMeta();
+        String stringMeta = meta.toString();
+        Pattern pattern = Pattern.compile("Damage=([0-9]{1,3})");
+        Matcher matcher = pattern.matcher(stringMeta);
+        if (!matcher.find()) {
+            return 0;
+        }
+        return Short.valueOf(matcher.group(1));
+    }
+
     private LinkedHashMap<Integer, ? extends ItemStack> searchInventory(Player player, ItemStack broken) {
         HashMap<Integer, ? extends ItemStack> matches = player.getInventory().all(broken.getType());
 
@@ -75,7 +89,7 @@ public final class ToolReplace extends JavaPlugin {
         matches.entrySet()
                .removeIf(e -> {
                    // check if broken
-                   if (e.getValue().getDurability() >= 100) {
+                   if (getItemDurability(e.getValue()) >= 100) {
                        return true;
                    // clause to catch items spawned damage
                    } else if (e.getValue().equals(broken)) {
@@ -86,7 +100,7 @@ public final class ToolReplace extends JavaPlugin {
 
         // sort based on damage
         Comparator<Map.Entry<Integer, ? extends ItemStack>> durabilityComparator =
-                (e1, e2) -> e1.getValue().getDurability() < e2.getValue().getDurability() ? 1 : -1;
+                (e1, e2) -> getItemDurability(e1.getValue()) < getItemDurability(e2.getValue()) ? 1 : -1;
 
         // return sorted map of matching items <Slot, Item>
         return matches.entrySet().stream()
@@ -116,7 +130,7 @@ public final class ToolReplace extends JavaPlugin {
                 "Replacing {0} with item from slot {1} with damage {2}",
                 item.getType(),
                 slot,
-                item.getDurability()
+                getItemDurability(item)
         );
         // move match to slot
         inv.setItem(inv.getHeldItemSlot(), item);
